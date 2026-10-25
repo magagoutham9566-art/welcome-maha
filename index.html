@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Maha</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #030712;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+#stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.page {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 22px;
+}
+
+.tag {
+  color: #67e8f9;
+  letter-spacing: 5px;
+  font-size: 12px;
+  margin-bottom: 25px;
+  animation: fade 2s infinite alternate;
+}
+
+h1 {
+  font-size: clamp(38px, 10vw, 75px);
+  font-weight: 900;
+  line-height: 1.2;
+  background: linear-gradient(
+    90deg, #22d3ee, #ffffff, #a78bfa, #22d3ee
+  );
+  background-size: 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 4s linear infinite, appear 1.5s ease;
+}
+
+.subtitle {
+  color: #cbd5e1;
+  margin-top: 20px;
+  font-size: 15px;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+
+.orb {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  margin-bottom: 30px;
+  background: radial-gradient(circle at 30% 30%,
+    #ffffff, #22d3ee 20%, #4338ca 60%, #030712 75%);
+  box-shadow: 0 0 35px #06b6d4,
+              0 0 80px #4f46e5;
+  animation: float 3s ease-in-out infinite;
+}
+
+.enter {
+  position: relative;
+  margin-top: 35px;
+  padding: 17px 45px;
+  border: 1px solid #67e8f9;
+  border-radius: 50px;
+  color: white;
+  background: linear-gradient(90deg, #0891b2, #4f46e5);
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #0891b2;
+  transition: .3s;
+}
+
+.enter:active {
+  transform: scale(.92);
+}
+
+.enter:hover {
+  box-shadow: 0 0 40px #22d3ee;
+  transform: translateY(-3px);
+}
+
+.footer {
+  position: absolute;
+  bottom: 22px;
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+#message {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: #030712;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 25px;
+}
+
+#message h2 {
+  color: #67e8f9;
+  font-size: clamp(30px, 8vw, 52px);
+  text-shadow: 0 0 25px #06b6d4;
+}
+
+#message p {
+  margin-top: 18px;
+  line-height: 1.8;
+  color: #cbd5e1;
+}
+
+.back {
+  margin-top: 30px;
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: 1px solid #22d3ee;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+@keyframes shine {
+  to { background-position: 300%; }
+}
+
+@keyframes float {
+  50% { transform: translateY(-13px) rotate(10deg); }
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade {
+  from { opacity: .45; }
+  to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<main class="page" id="home">
+  <div class="orb"></div>
+
+  <div class="tag">✦ A NEW WORLD AWAITS ✦</div>
+
+  <h1>WELCOME<br>TO MAHA</h1>
+
+  <p class="subtitle">
+    Not just a website...<br>
+    It's Maha's own universe. 🌌
+  </p>
+
+  <button class="enter" onclick="enterWorld()">
+    ENTER MY WORLD ↗
+  </button>
+
+  <div class="footer">DESIGNED WITH ✦ BY MAHA</div>
+</main>
+
+<section id="message">
+  <h2 id="typing">WELCOME, EXPLORER!</h2>
+  <p>
+    You've entered the world of Maha. ✨<br>
+    Dream big. Create something amazing.<br>
+    Your adventure starts here!
+  </p>
+  <button class="back" onclick="goBack()">← GO BACK</button>
+</section>
+
+<script>
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let stars = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  stars = Array.from({length: 110}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.8 + .3,
+    speed: Math.random() * .5 + .15
+  }));
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#a5f3fc";
+    ctx.fill();
+
+    s.y -= s.speed;
+
+    if (s.y < 0) {
+      s.y = canvas.height;
+      s.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener("resize", resize);
+resize();
+animate();
+
+function enterWorld() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("message").style.display = "flex";
+  burst();
+}
+
+function goBack() {
+  document.getElementById("message").style.display = "none";
+  document.getElementById("home").style.display = "flex";
+}
+
+function burst() {
+  for (let i = 0; i < 35; i++) {
+    const star = document.createElement("div");
+    star.textContent = ["✦", "✧", "✨", "⋆"][i % 4];
+
+    Object.assign(star.style, {
+      position: "fixed",
+      left: Math.random() * 100 + "vw",
+      top: Math.random() * 100 + "vh",
+      color: "#67e8f9",
+      fontSize: (12 + Math.random() * 22) + "px",
+      pointerEvents: "none",
+      zIndex: "10",
+      transition: "1.5s ease",
+      opacity: "1"
+    });
+
+    document.body.appendChild(star);
+
+    requestAnimationFrame(() => {
+      star.style.transform =
+        `translate(${Math.random()*120-60}px, -100px) rotate(180deg)`;
+      star.style.opacity = "0";
+    });
+
+    setTimeout(() => star.remove(), 1600);
+  }
+}
+</script>
+
+</body>
+</html>
